@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 import Header from '../../common/layout/Header';
 import Footer from '../../common/layout/Footer';
 import Background from '../../common/layout/Background';
@@ -6,26 +7,42 @@ import Sensor from '../../modules/Sensor';
 
 import '../../common/styles/Root.css';
 
-export default function Root() {
-  const IPTABLE = ['http://192.168.1.80:5000/', 'http://192.168.1.80:5000/', 'http://192.168.1.80:5000/', 'http://192.168.1.80:5000/'];
+export default class Root extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      data: [],
+    };
+  }
 
-  return (
-    <div
-      className="Root"
-      style={{
-        display: 'flex', flexDirection: 'column', alignItems: 'center', minHeight: '100vh',
-      }}
-    >
-      <Header />
+  componentDidMount() {
+    axios('http://localhost:5000/get')
+      .then((res) => {
+        this.setState({data: res.data});
+        
+      });
+  }
 
-      {
-        IPTABLE.map((ip) => <Sensor value={ip} />)
+  render() {
+    return (
+      <div
+        className="Root"
+        style={{
+          display: 'flex', flexDirection: 'column', alignItems: 'center', minHeight: '100vh',
+        }}
+      >
+        <Header />
+
+
+        {
+        this.state.data.map((json) => <Sensor value={JSON.parse(json)} />)
       }
 
-      <div style={{ flex: 1 }} />
-      <Footer />
+        <div style={{ flex: 1 }} />
+        <Footer />
 
-      <Background />
-    </div>
-  );
+        <Background />
+      </div>
+    );
+  }
 }
