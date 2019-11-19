@@ -18,9 +18,13 @@ export default class Root extends React.Component {
   componentDidMount() {
     axios('http://localhost:5000/get')
       .then((res) => {
-        this.setState({data: res.data});
-        
+        this.setState({ data: res.data });
       });
+    if (this.state.data === undefined) {
+      this.setState({
+        data: [],
+      });
+    }
   }
 
   render() {
@@ -35,8 +39,8 @@ export default class Root extends React.Component {
 
 
         {
-        this.state.data.map((json) => <Sensor value={JSON.parse(json)} />)
-      }
+          this.state.data.map((json) => <Sensor value={JSON.parse(json)} />)
+        }
 
         <div style={{ flex: 1 }} />
         <Footer />
