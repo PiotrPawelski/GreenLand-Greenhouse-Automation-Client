@@ -39,7 +39,7 @@ export default class Root extends React.Component {
 
 
         {
-          this.state.data.map((json) => <Sensor value={JSON.parse(json)} />)
+          this.state.data.map((json) => <Sensor value={json} />)
         }
 
         <div style={{ flex: 1 }} />
